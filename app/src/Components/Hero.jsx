@@ -2,14 +2,13 @@
 import { useEffect, useState } from "react";
 import { Mic, StopCircle, Upload } from "lucide-react";
 import useSpeechToText from "react-hook-speech-to-text";
-import "./Hero.css"
+import "./Hero.css";
 export default function Hero() {
   const [inputType, setInputType] = useState(null);
   const [file, setFile] = useState(null);
   const [convertedText, setConvertedText] = useState("");
   const [descriptionText, setDescriptionText] = useState("");
   const {
-    
     isRecording,
     results,
     startSpeechToText,
@@ -79,123 +78,127 @@ export default function Hero() {
           help identify potential health issues.
         </p>
       </main>
-
       <div className="button-container">
-        <button className="button" onClick={() => setInputType("audio")}>
+        <button
+          className="button flex justify-center items-center"
+          onClick={() => setInputType("audio")}
+        >
           <span role="img" aria-label="mic" className="mic-icon">
             🎙️
-          </span>{" "}
+          </span>
           Audio
         </button>
-        <button className="button" onClick={() => setInputType("text")}>
-        <span role="img" aria-label="mic" className="text-icon">
+        <button
+          className="button flex justify-center items-center"
+          onClick={() => setInputType("text")}
+        >
+          <span role="img" aria-label="mic" className="keyboard-icon mb-2 ">
             ⌨️
-          </span>{" "}
-          Text
-
+          </span>
+          Enter Text
         </button>
       </div>
-
       <div className=" py-10 px-4 sm:px-6 lg:px-8">
-      {inputType && (
-        <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="px-4 py-5 sm:p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Provide Your Symptom Data
-            </h2>
-            <form onSubmit={handleSubmit}>
-              {inputType && (
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700">
-                    {inputType === "audio"
-                      ? "Upload Audio or Record"
-                      : "Describe your experience"}
-                  </label>
+        {inputType && (
+          <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="px-4 py-5 sm:p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Provide Your Symptom Data
+              </h2>
+              <form onSubmit={handleSubmit}>
+                {inputType && (
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">
+                      {inputType === "audio"
+                        ? "Upload Audio or Record"
+                        : "Describe your experience"}
+                    </label>
 
-                  <div className="mt-2 flex items-center gap-4">
-                    {inputType === "audio" && (
-                      <>
-                        <button
-                          type="button"
-                          onClick={StartStopRecording}
-                          className={`flex items-center justify-center px-4 py-2 border rounded-md ${
-                            isRecording
-                              ? "bg-red-500 text-white"
-                              : "bg-orange-400 text-white"
-                          }`}
-                        >
-                          {isRecording ? (
-                            <h2 className="animate-pulse flex gap-2 items-center">
-                              <StopCircle />
-                              Stop Recording
-                            </h2>
-                          ) : (
-                            <h2 className="text-primary flex gap-2 items-center">
-                              <Mic className="w-5 h-5 mr-2" />
-                              Record Answer
-                            </h2>
-                          )}
-                        </button>
-
-                        <label className="flex items-center justify-center px-5 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-white bg-orange-400 hover:bg-orange-500">
-                          <Upload className="w-6 h-6 mr-2" />
-                          Upload {inputType === "audio" ? "Audio" : "Video"}
-                          <input
-                            type="file"
-                            className="sr-only"
-                            onChange={handleFileChange}
-                            accept={
-                              inputType === "audio" ? "audio/*" : "video/*"
-                            }
-                          />
-                        </label>
-                        {file && (
+                    <div className="mt-2 flex items-center gap-4">
+                      {inputType === "audio" && (
+                        <>
                           <button
                             type="button"
-                            onClick={handleProcessAudio}
-                            className={
-                              "flex items-center justify-center px-4 py-2 border rounded-md bg-green-500 text-white"
-                            }
+                            onClick={StartStopRecording}
+                            className={`flex items-center justify-center px-4 py-2 border rounded-md ${
+                              isRecording
+                                ? "bg-red-500 text-white"
+                                : "bg-orange-400 text-white"
+                            }`}
                           >
-                            Proceed
+                            {isRecording ? (
+                              <h2 className="animate-pulse flex gap-2 items-center">
+                                <StopCircle />
+                                Stop Recording
+                              </h2>
+                            ) : (
+                              <h2 className="text-primary flex gap-2 items-center">
+                                <Mic className="w-5 h-5 mr-2" />
+                                Record Answer
+                              </h2>
+                            )}
                           </button>
-                        )}
-                      </>
-                    )}
-                    {inputType === "text" && (
-                      <textarea
-                        id="convertedText"
-                        rows={4}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                        value={descriptionText}
-                        onChange={handleTextChange}
-                        placeholder="Write the Sentence"
-                      />
+
+                          <label className="flex items-center justify-center px-5 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-white bg-orange-400 hover:bg-orange-500">
+                            <Upload className="w-6 h-6 mr-2" />
+                            Upload {inputType === "audio" ? "Audio" : "Video"}
+                            <input
+                              type="file"
+                              className="sr-only"
+                              onChange={handleFileChange}
+                              accept={
+                                inputType === "audio" ? "audio/*" : "video/*"
+                              }
+                            />
+                          </label>
+                          {file && (
+                            <button
+                              type="button"
+                              onClick={handleProcessAudio}
+                              className={
+                                "flex items-center justify-center px-4 py-2 border rounded-md bg-green-500 text-white"
+                              }
+                            >
+                              Proceed
+                            </button>
+                          )}
+                        </>
+                      )}
+                      {inputType === "text" && (
+                        <textarea
+                          id="convertedText"
+                          rows={4}
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                          value={descriptionText}
+                          onChange={handleTextChange}
+                          placeholder="Write the Sentence"
+                        />
+                      )}
+                    </div>
+                    {file && (
+                      <p className="mt-2 text-sm text-gray-500">
+                        File selected: {file.name}
+                      </p>
                     )}
                   </div>
-                  {file && (
-                    <p className="mt-2 text-sm text-gray-500">
-                      File selected: {file.name}
-                    </p>
-                  )}
-                </div>
-              )}
-              {(descriptionText || convertedText) && (
-                <div className="flex justify-center mt-6">
-                  <button
-                    type="submit"
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={printConvertedText}
-                  >
-                    Predict
-                  </button>
-                </div>
-              )}
-            </form>
+                )}
+                {(descriptionText || convertedText) && (
+                  <div className="flex justify-center mt-6">
+                    <button
+                      type="submit"
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      onClick={printConvertedText}
+                    >
+                      Predict
+                    </button>
+                  </div>
+                )}
+              </form>
+            </div>
           </div>
-        </div>)}
-      </div>)
-            
+        )}
+      </div>
+      )
       <footer className="text-center pb-6 text-gray-600">
         © {new Date().getFullYear()} AI Disease Detection. All rights reserved.
       </footer>
