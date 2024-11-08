@@ -38,10 +38,12 @@
   
   /* General button styling */
   .button {
-    padding: 12px 24px;
+    padding: 10px 24px;
     font-size: 1.1em;
     border-radius: 8px;
     border: none;
+    display: flex;
+    text-align: center;
     cursor: pointer;
     transition: background-color 0.3s;
   }
@@ -127,5 +129,10 @@
   /* Mic icon styling */
   .mic-icon {
     margin-right: 5px;
+    /* font-size: 22px; */
+  }
+  .text-icon {
+    margin-right: 5px;
+    /* font-size: 24px; */
   }
   

@@ -2,15 +2,14 @@
 import { useEffect, useState } from "react";
 import { Mic, StopCircle, Upload } from "lucide-react";
 import useSpeechToText from "react-hook-speech-to-text";
-
+import "./Hero.css"
 export default function Hero() {
   const [inputType, setInputType] = useState(null);
   const [file, setFile] = useState(null);
   const [convertedText, setConvertedText] = useState("");
   const [descriptionText, setDescriptionText] = useState("");
   const {
-    error,
-    interimResult,
+    
     isRecording,
     results,
     startSpeechToText,
@@ -89,11 +88,16 @@ export default function Hero() {
           Audio
         </button>
         <button className="button" onClick={() => setInputType("text")}>
-          Enter Text
+        <span role="img" aria-label="mic" className="text-icon">
+            ⌨️
+          </span>{" "}
+          Text
+
         </button>
       </div>
 
-      <div className="min-h-screen  py-12 px-4 sm:px-6 lg:px-8">
+      <div className=" py-10 px-4 sm:px-6 lg:px-8">
+      {inputType && (
         <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
           <div className="px-4 py-5 sm:p-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -189,8 +193,9 @@ export default function Hero() {
               )}
             </form>
           </div>
-        </div>
-      </div>
+        </div>)}
+      </div>)
+            
       <footer className="text-center pb-6 text-gray-600">
         © {new Date().getFullYear()} AI Disease Detection. All rights reserved.
       </footer>
