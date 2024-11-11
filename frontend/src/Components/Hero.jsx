@@ -51,7 +51,7 @@ export default function Hero() {
       const formData = new FormData();
       formData.append("audio", file);
 
-      const url = "http://localhost:5000/audio/convert";
+      const url = "https://idp-ai.onrender.com/audio/convert";
       const data = {
         audio: "file",
       };
@@ -88,7 +88,7 @@ export default function Hero() {
   };
 
   const GetResult = async (inputText) => {
-    const url = "http://localhost:5000/predict";
+    const url = "https://idp-ai.onrender.com/predict";
     const data = {
       input: inputText,
     };
