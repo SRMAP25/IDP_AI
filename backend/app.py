@@ -3,6 +3,7 @@ import pickle
 from flask_cors import CORS
 import re
 import nltk
+import os
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from Transcribe import Transcribe
@@ -14,17 +15,21 @@ nltk.download('omw-1.4')
 app = Flask(__name__)
 CORS(app)
 
-
 with open('svm_model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 with open('tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
     tfidf = pickle.load(vectorizer_file)
 
-
 stop_words = set(stopwords.words('english'))
 lemmatizer = WordNetLemmatizer()
 
-client=os.path.join(os.getcwd(),"..","app","dist")
+def preprocess_text(text):
+    text = text.lower()
+    text = re.sub(r'[^a-z\s]', '', text)
+    tokens = [lemmatizer.lemmatize(word) for word in text.split() if word not in stop_words]
+    return ' '.join(tokens)
+
+client = os.path.join(os.getcwd(),"..","frontend","dist")
 
 @app.route("/",defaults={"filename":""})
 @app.route("/<path:filename>")
@@ -32,12 +37,6 @@ def index(filename):
     if not filename:
         filename="index.html"
     return send_from_directory(client,filename)
-
-def preprocess_text(text):
-    text = text.lower()
-    text = re.sub(r'[^a-z\s]', '', text)
-    tokens = [lemmatizer.lemmatize(word) for word in text.split() if word not in stop_words]
-    return ' '.join(tokens)
 
 @app.post('/predict')
 def predict():
@@ -60,3 +59,6 @@ def audio():
     audiopath = './audios/' + audiofile.filename
     audiofile.save(audiopath)
     return {"text": Transcribe(audiopath)}
+
+# if __name__ == "__main__":
+#     app.run(debug=True)

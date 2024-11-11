@@ -23,31 +23,6 @@ export default function Hero() {
     useLegacyResults: false,
   });
 
-  const GetResult = async (inputText) => {
-    const url = "http://localhost:5000/predict";
-    const data = {
-      input: inputText,
-    };
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    };
-    setStatus(true);
-    fetch(url, options)
-      .then((res) => res.json())
-      .then((x) => {
-        setStatus(false);
-        setPrediction(x.prediction);
-      })
-      .catch((err) => {
-        setStatus(false);
-        console.error("Error:", err);
-      });
-  };
-
   useEffect(() => {
     inputType === "audio" ? setDescriptionText("") : setConvertedText("");
   }, [prediction]);
@@ -71,23 +46,6 @@ export default function Hero() {
     }
   };
 
-  const handleTextChange = (event) => {
-    setDescriptionText(event.target.value);
-    setPrediction(null);
-  };
-
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setConvertedText("");
-    }
-  };
-
-  const handleFileDelete = () => {
-    setFile(null);
-  };
-
   const handleProcessAudio = async () => {
     if (file) {
       const formData = new FormData();
@@ -97,13 +55,6 @@ export default function Hero() {
       const data = {
         audio: "file",
       };
-      // const response = await fetch(url, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(data),
-      // });
       try {
         setProcessing(true);
         const response = await fetch(url, {
@@ -134,6 +85,31 @@ export default function Hero() {
     } else {
       GetResult(descriptionText);
     }
+  };
+
+  const GetResult = async (inputText) => {
+    const url = "http://localhost:5000/predict";
+    const data = {
+      input: inputText,
+    };
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+    setStatus(true);
+    fetch(url, options)
+      .then((res) => res.json())
+      .then((x) => {
+        setStatus(false);
+        setPrediction(x.prediction);
+      })
+      .catch((err) => {
+        setStatus(false);
+        console.error("Error:", err);
+      });
   };
 
   return (
@@ -265,7 +241,10 @@ export default function Hero() {
                           rows={4}
                           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                           value={descriptionText}
-                          onChange={handleTextChange}
+                          onChange={(e) => {
+                            setDescriptionText(e.target.value);
+                            setPrediction(null);
+                          }}
                           placeholder="Write here"
                         />
                       )}
@@ -282,7 +261,10 @@ export default function Hero() {
                               rows={5}
                               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                               value={convertedText}
-                              onChange={(e) => setConvertedText(e.target.value)}
+                              onChange={(e) => {
+                                setConvertedText(e.target.value);
+                                setPrediction(null);
+                              }}
                               placeholder="Converting..."
                             />
                           </>
